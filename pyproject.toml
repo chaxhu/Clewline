@@ -1,0 +1,16 @@
+[project]
+name = "clewline"
+version = "0.1.0"
+description = "Governed agentic casework engine: AI reads and checks, a human decides."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+]
