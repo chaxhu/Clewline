@@ -5,7 +5,7 @@ from datetime import date
 import pytest
 from pydantic import ValidationError
 
-from core.schema import Case, Citation, Issue, Span, TriageResult
+from core.schema import Case, CaseLabel, Citation, Issue, RiskFlag, Span, TriageResult
 
 TEXT = "My boiler has been broken for three weeks."
 
@@ -96,16 +96,56 @@ def test_citation_rejects_unknown_status():
         Citation(raw_text="section 11", status="fake", span=Span(start=0, end=10))
 
 
-def test_citation_requires_span():
+def test_citation_grounded_and_ungrounded():
+    grounded = Citation(raw_text="section 11", status="verified", span=Span(start=0, end=10))
+    ungrounded = Citation(raw_text="section 11", status="verified")
+    assert grounded.is_grounded
+    assert not ungrounded.is_grounded
+
+
+def test_citation_rejects_empty_raw_text():
     with pytest.raises(ValidationError):
-        Citation(raw_text="section 11", status="verified")
+        Citation(raw_text="", status="verified")
+
+
+# ---------- RiskFlag ----------
+
+@pytest.mark.parametrize("source", ["rule", "model"])
+def test_risk_flag_accepts_each_source(source):
+    assert RiskFlag(name="vulnerable_person", source=source).source == source
+
+
+@pytest.mark.parametrize(
+    "data",
+    [
+        {"name": "vulnerable_person", "source": "human"},  # unknown source
+        {"name": "", "source": "rule"},  # empty name
+        {"name": "vulnerable_person"},  # missing source
+    ],
+)
+def test_risk_flag_rejects_bad_data(data):
+    with pytest.raises(ValidationError):
+        RiskFlag(**data)
 
 
 # ---------- TriageResult ----------
 
 def test_triage_valid():
-    t = TriageResult(urgency_band=4, risk_flags=["vulnerable_person"], reasons=["Baby in home"])
+    t = TriageResult(
+        urgency_band=4,
+        risk_flags=[
+            RiskFlag(name="vulnerable_person", source="rule"),
+            {"name": "safety_risk", "source": "model"},  # a plain dict is converted too
+        ],
+        reasons=["Baby in home"],
+    )
     assert t.urgency_band == 4
+    assert [f.source for f in t.risk_flags] == ["rule", "model"]
+
+
+def test_triage_rejects_plain_string_flags():
+    with pytest.raises(ValidationError):
+        TriageResult(urgency_band=3, risk_flags=["vulnerable_person"], reasons=["x"])
 
 
 @pytest.mark.parametrize("band", [0, 6, -1])
@@ -120,5 +160,41 @@ def test_triage_requires_a_reason():
 
 
 def test_round_trip_through_json():
-    t = TriageResult(urgency_band=2, reasons=["Routine"])
+    t = TriageResult(
+        urgency_band=2, risk_flags=[RiskFlag(name="repeat_contact", source="rule")], reasons=["Routine"]
+    )
     assert TriageResult.model_validate_json(t.model_dump_json()) == t
+
+
+# ---------- CaseLabel ----------
+
+def make_label(**overrides):
+    data = {
+        "case_id": "case_001",
+        "issues": [{"summary": "Broken boiler", "category": "housing_repairs", "span": {"start": 3, "end": 9}}],
+        "urgency_band": 3,
+        "citations": [],
+    }
+    data.update(overrides)
+    return CaseLabel(**data)
+
+
+def test_case_label_valid():
+    label = make_label()
+    assert label.issues[0].span == Span(start=3, end=9)
+    assert label.citations == []
+
+
+@pytest.mark.parametrize(
+    "overrides",
+    [
+        {"case_id": ""},
+        {"issues": []},  # every labelled case has at least one issue
+        {"urgency_band": 0},
+        {"citations": [{"raw_text": "s.11", "status": "maybe"}]},
+        {"source_text": "answers must not travel with the text"},  # extra field
+    ],
+)
+def test_case_label_rejects_bad_data(overrides):
+    with pytest.raises(ValidationError):
+        make_label(**overrides)

@@ -93,12 +93,29 @@ class Citation(StrictModel):
       verified      the act and section exist
       not_found     the act does not exist
       needs_review  the act exists but the section or detail does not check out
+
+    span is None when the citation cannot be linked to the source text.
+    It is kept and flagged as ungrounded, never silently dropped.
     """
 
     raw_text: str = Field(min_length=1)
     normalised_ref: str | None = None
     status: CitationStatus
-    span: Span
+    span: Span | None = None
+
+    @property
+    def is_grounded(self) -> bool:
+        return self.span is not None
+
+
+RiskFlagSource = Literal["rule", "model"]
+
+
+class RiskFlag(StrictModel):
+    """One risk signal, and whether a fixed rule or a model raised it."""
+
+    name: str = Field(min_length=1)
+    source: RiskFlagSource
 
 
 class TriageResult(StrictModel):
@@ -108,5 +125,20 @@ class TriageResult(StrictModel):
     """
 
     urgency_band: int = Field(ge=1, le=5)
-    risk_flags: list[str] = Field(default_factory=list)
+    risk_flags: list[RiskFlag] = Field(default_factory=list)
     reasons: list[str] = Field(min_length=1)
+
+
+class CaseLabel(StrictModel):
+    """The human-labelled right answers for one Case.
+
+    Labels live in a separate model and a separate file from the Case, so a
+    step under test only ever receives the Case and cannot see the answers.
+    Only the evaluation runner joins the two, by case_id.
+    """
+
+    case_id: str = Field(min_length=1)
+    issues: list[Issue] = Field(min_length=1)
+    urgency_band: int = Field(ge=1, le=5)
+    citations: list[Citation] = Field(default_factory=list)
+    notes: str | None = None  # free-text labelling rationale for human reviewers
