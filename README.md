@@ -14,6 +14,47 @@ cp .env.example .env    # then add your own keys
 uv run pytest           # run the tests
 ```
 
+## Tracing setup (Langfuse, local)
+
+Langfuse records every step the system runs: inputs, outputs, timing and, later, model cost. It runs on your machine in Docker. Give Docker Desktop at least 4 GB of memory.
+
+**1. Generate the server secrets** (only needed once):
+
+```bash
+uv run python scripts/generate_secrets.py
+```
+
+This creates `.env` from `.env.example` and fills every `change-me` with a random value. It prints only the names of the secrets, never the values.
+
+**2. Start Langfuse:**
+
+```bash
+docker compose up -d
+docker compose ps        # wait until langfuse-web shows "Up" (about 1 to 2 minutes the first time)
+```
+
+**3. Create an account, a project and API keys** at http://localhost:3000:
+1. Click **Sign up**. Use any name, email and password. The account exists only in your local database, so the email is never checked.
+2. Create an **organisation** (for example `clewline`). You can skip inviting members.
+3. Create a **project** (for example `council-complaints`).
+4. Open the project's **Settings > API Keys** and click **Create new API keys**.
+5. Copy the keys into `.env`. The secret key is shown only once.
+   ```
+   LANGFUSE_PUBLIC_KEY=pk-lf-...
+   LANGFUSE_SECRET_KEY=sk-lf-...
+   LANGFUSE_BASE_URL=http://localhost:3000
+   ```
+
+**4. Send a test trace:**
+
+```bash
+uv run python scripts/send_test_trace.py
+```
+
+It prints a link. Open it, or go to **Tracing** in the left menu. You should see one trace called `test_trace_pipeline`, with one span called `count_words` nested inside it.
+
+To stop Langfuse, run `docker compose down`. Your data is kept. `docker compose down -v` deletes it.
+
 ## Layout
 
 | Folder | What lives there |

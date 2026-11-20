@@ -5,7 +5,9 @@ description = "Governed agentic casework engine: AI reads and checks, a human de
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "langfuse>=5.2.0",
     "pydantic>=2.14.4",
+    "python-dotenv>=1.2.4",
 ]
 
 [tool.pytest.ini_options]
