@@ -1,0 +1,61 @@
+{
+  "case_id": "case_015",
+  "issues": [
+    {
+      "summary": "Neighbour running noisy car repairs from driveway",
+      "category": "noise_asb",
+      "span": {
+        "start": 276,
+        "end": 323
+      }
+    },
+    {
+      "summary": "Three noise reports closed without contact",
+      "category": "complaint_handling",
+      "span": {
+        "start": 429,
+        "end": 517
+      }
+    }
+  ],
+  "urgency_band": 3,
+  "citations": [
+    {
+      "raw_text": "section 79 of the\nEnvironmental Protection Act 1990",
+      "normalised_ref": "Environmental Protection Act 1990, s.79",
+      "status": "verified",
+      "span": {
+        "start": 596,
+        "end": 647
+      }
+    },
+    {
+      "raw_text": "section\n104 of the Anti-social Behaviour, Crime and Policing Act 2014",
+      "normalised_ref": "Anti-social Behaviour, Crime and Policing Act 2014, s.104",
+      "status": "verified",
+      "span": {
+        "start": 792,
+        "end": 861
+      }
+    },
+    {
+      "raw_text": "section 181 of the Environmental Protection Act 1990",
+      "normalised_ref": "Environmental Protection Act 1990, s.181",
+      "status": "needs_review",
+      "span": {
+        "start": 889,
+        "end": 941
+      }
+    },
+    {
+      "raw_text": "Tenants' Bill of Rights Act 2022",
+      "normalised_ref": "Tenants' Bill of Rights Act 2022",
+      "status": "not_found",
+      "span": {
+        "start": 1014,
+        "end": 1046
+      }
+    }
+  ],
+  "notes": "style: ai. Band 3: months of ongoing nuisance and repeated closed reports, no safety risk."
+}

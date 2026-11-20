@@ -1,0 +1,26 @@
+{
+  "case_id": "case_009",
+  "issues": [
+    {
+      "summary": "Parking ticket issued where bay sign was hidden by a hedge",
+      "category": "parking",
+      "span": {
+        "start": 50,
+        "end": 96
+      }
+    }
+  ],
+  "urgency_band": 2,
+  "citations": [
+    {
+      "raw_text": "Council Accountability Act 2019",
+      "normalised_ref": "Council Accountability Act 2019",
+      "status": "not_found",
+      "span": {
+        "start": 130,
+        "end": 161
+      }
+    }
+  ],
+  "notes": "style: human. Band 2: disputed ticket, no health or safety impact."
+}

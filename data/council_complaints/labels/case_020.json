@@ -1,0 +1,35 @@
+{
+  "case_id": "case_020",
+  "issues": [
+    {
+      "summary": "Online garden waste form timed out twice before renewal succeeded",
+      "category": "general_feedback",
+      "span": {
+        "start": 263,
+        "end": 329
+      }
+    }
+  ],
+  "urgency_band": 1,
+  "citations": [
+    {
+      "raw_text": "Human Rights Act 1998, section 6",
+      "normalised_ref": "Human Rights Act 1998, s.6",
+      "status": "verified",
+      "span": {
+        "start": 619,
+        "end": 651
+      }
+    },
+    {
+      "raw_text": "Public Services Fairness Act 2016",
+      "normalised_ref": "Public Services Fairness Act 2016",
+      "status": "not_found",
+      "span": {
+        "start": 713,
+        "end": 746
+      }
+    }
+  ],
+  "notes": "style: ai. Band 1: minor website problem, renewal succeeded. Strong words ('urgent', 'distressing') do not raise the band."
+}

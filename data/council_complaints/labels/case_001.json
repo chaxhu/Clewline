@@ -1,0 +1,16 @@
+{
+  "case_id": "case_001",
+  "issues": [
+    {
+      "summary": "Boiler broken for days with no repair visit",
+      "category": "housing_repairs",
+      "span": {
+        "start": 4,
+        "end": 68
+      }
+    }
+  ],
+  "urgency_band": 4,
+  "citations": [],
+  "notes": "style: human. Band 4: no heating in cold weather with an infant in the home."
+}

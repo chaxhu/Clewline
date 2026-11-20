@@ -1,0 +1,61 @@
+{
+  "case_id": "case_016",
+  "issues": [
+    {
+      "summary": "Family with three children in unsuitable bed and breakfast for seven weeks",
+      "category": "homelessness",
+      "span": {
+        "start": 251,
+        "end": 349
+      }
+    },
+    {
+      "summary": "Children in need referral not actioned",
+      "category": "children_services",
+      "span": {
+        "start": 953,
+        "end": 998
+      }
+    }
+  ],
+  "urgency_band": 4,
+  "citations": [
+    {
+      "raw_text": "section 188\nof the Housing Act 1996",
+      "normalised_ref": "Housing Act 1996, s.188",
+      "status": "verified",
+      "span": {
+        "start": 554,
+        "end": 589
+      }
+    },
+    {
+      "raw_text": "section 247 of the Housing Act\n1996",
+      "normalised_ref": "Housing Act 1996, s.247",
+      "status": "needs_review",
+      "span": {
+        "start": 629,
+        "end": 664
+      }
+    },
+    {
+      "raw_text": "section 17 of the Children Act 1989",
+      "normalised_ref": "Children Act 1989, s.17",
+      "status": "verified",
+      "span": {
+        "start": 858,
+        "end": 893
+      }
+    },
+    {
+      "raw_text": "section 149 of the Equality Act 2012",
+      "normalised_ref": "Equality Act 2010, s.149 (cited as 2012)",
+      "status": "needs_review",
+      "span": {
+        "start": 1058,
+        "end": 1094
+      }
+    }
+  ],
+  "notes": "style: ai. Band 4: young child repeatedly ill in unsuitable accommodation, family has been there seven weeks."
+}

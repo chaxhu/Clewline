@@ -1,0 +1,26 @@
+{
+  "case_id": "case_003",
+  "issues": [
+    {
+      "summary": "Reported pothole not repaired and has caused a fall",
+      "category": "highways",
+      "span": {
+        "start": 17,
+        "end": 100
+      }
+    }
+  ],
+  "urgency_band": 3,
+  "citations": [
+    {
+      "raw_text": "section 41 of the Highways Act 1980",
+      "normalised_ref": "Highways Act 1980, s.41",
+      "status": "verified",
+      "span": {
+        "start": 269,
+        "end": 304
+      }
+    }
+  ],
+  "notes": "style: human. Band 3: ongoing hazard that has already caused an injury, but no immediate danger to life."
+}

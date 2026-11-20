@@ -1,0 +1,61 @@
+{
+  "case_id": "case_014",
+  "issues": [
+    {
+      "summary": "Broken paving slabs causing trips",
+      "category": "highways",
+      "span": {
+        "start": 194,
+        "end": 275
+      }
+    },
+    {
+      "summary": "Repeated fly-tipping in the alleyway",
+      "category": "street_cleansing",
+      "span": {
+        "start": 792,
+        "end": 871
+      }
+    }
+  ],
+  "urgency_band": 3,
+  "citations": [
+    {
+      "raw_text": "Highways Act 1980, section 41",
+      "normalised_ref": "Highways Act 1980, s.41",
+      "status": "verified",
+      "span": {
+        "start": 426,
+        "end": 455
+      }
+    },
+    {
+      "raw_text": "section\n512 of the Highways Act 1980",
+      "normalised_ref": "Highways Act 1980, s.512",
+      "status": "needs_review",
+      "span": {
+        "start": 561,
+        "end": 597
+      }
+    },
+    {
+      "raw_text": "Highways Pothole Compensation Act 2018",
+      "normalised_ref": "Highways Pothole Compensation Act 2018",
+      "status": "not_found",
+      "span": {
+        "start": 686,
+        "end": 724
+      }
+    },
+    {
+      "raw_text": "Section 89 of the\nEnvironmental Protection Act 1990",
+      "normalised_ref": "Environmental Protection Act 1990, s.89",
+      "status": "verified",
+      "span": {
+        "start": 949,
+        "end": 1000
+      }
+    }
+  ],
+  "notes": "style: ai. Band 3: trip hazard has already caused falls; fly-tipping is ongoing. No immediate danger to life."
+}

@@ -1,0 +1,16 @@
+{
+  "case_id": "case_019",
+  "issues": [
+    {
+      "summary": "Park bench has a broken slat",
+      "category": "parks_open_spaces",
+      "span": {
+        "start": 7,
+        "end": 52
+      }
+    }
+  ],
+  "urgency_band": 1,
+  "citations": [],
+  "notes": "style: human. Band 1: minor maintenance, writer says it is not dangerous."
+}

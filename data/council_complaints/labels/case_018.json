@@ -1,0 +1,44 @@
+{
+  "case_id": "case_018",
+  "issues": [
+    {
+      "summary": "Recycling bin missed four weeks running",
+      "category": "waste_recycling",
+      "span": {
+        "start": 176,
+        "end": 232
+      }
+    }
+  ],
+  "urgency_band": 2,
+  "citations": [
+    {
+      "raw_text": "Waste Collection Standards Act 2017",
+      "normalised_ref": "Waste Collection Standards Act 2017",
+      "status": "not_found",
+      "span": {
+        "start": 538,
+        "end": 573
+      }
+    },
+    {
+      "raw_text": "section 89 of the\nEnvironmental Protection Act 1990",
+      "normalised_ref": "Environmental Protection Act 1990, s.89",
+      "status": "verified",
+      "span": {
+        "start": 662,
+        "end": 713
+      }
+    },
+    {
+      "raw_text": "Council Accountability\nAct 2019",
+      "normalised_ref": "Council Accountability Act 2019",
+      "status": "not_found",
+      "span": {
+        "start": 848,
+        "end": 879
+      }
+    }
+  ],
+  "notes": "style: ai. Band 2: repeated missed collection, no health or safety impact."
+}

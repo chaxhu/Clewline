@@ -1,0 +1,16 @@
+{
+  "case_id": "case_005",
+  "issues": [
+    {
+      "summary": "Library opening hours on website are wrong",
+      "category": "general_feedback",
+      "span": {
+        "start": 23,
+        "end": 111
+      }
+    }
+  ],
+  "urgency_band": 1,
+  "citations": [],
+  "notes": "style: human. Band 1: minor website correction."
+}
