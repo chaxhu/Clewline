@@ -21,15 +21,15 @@ uv run pytest tests/test_dataset.py
 | Dimension | Mix | Why |
 | --- | --- | --- |
 | Style | 10 short human letters, 10 long AI-style letters | The PRD's core problem is long AI-written letters. Short ones check that the system does not over-read simple cases. |
-| Urgency band | 1: 3, 2: 5, 3: 6, 4: 4, 5: 2 | Real complaint queues are mostly routine. Every band is present, so accuracy per band can be measured. |
+| Urgency band | 1: 3, 2: 5, 3: 5, 4: 5, 5: 2 | Real complaint queues are mostly routine. Every band is present, so accuracy per band can be measured. |
 | Issues per case | 11 cases with 1 issue, 9 with 2 (29 in total) | Win 2 must split letters into issues, so about half of the letters have more than one. |
-| Citations | 39 in total: 21 verified, 10 not_found, 8 needs_review | Just over half are real, so a detector that says "fake" every time scores badly. |
+| Citations | 39 in total: 21 verified, 10 not_found, 8 needs_review. The 10 not_found are 7 different invented act names; 3 of them appear twice. | Just over half are real, so a detector that says "fake" every time scores badly. |
 | Cases with no citations | 5 (all short human letters) | Checks that the extractor does not invent citations. |
 | Channel | email, web_form, letter, phone | Covers every channel the schema allows. |
 
 Deliberate traps:
 - **case_020** is long, dramatic and uses words like "urgent", "distressing" and "unacceptable", but it is a band 1 website gripe. A keyword-based scorer should get it wrong.
-- **case_014, case_018**: a real section is cited for the wrong purpose. EPA 1990 s.89 is about litter, but case_018 uses it for missed recycling. Labels record whether the law exists, not whether it fits the argument, so these are still `verified`.
+- **case_018** (misapplied): EPA 1990 s.89 is the litter duty, but the letter uses it for missed recycling. Labels record whether the law exists, not whether it fits the argument, so it stays `verified`. The label notes say "misapplied". case_014 cites the same section correctly, for fly-tipping.
 - **case_016**: "section 149 of the Equality Act 2012". The act is real but the year is wrong (it is 2010).
 - **Line breaks inside citations**: several AI-style citations wrap across lines, for example "section 11 of the\nLandlord and Tenant Act 1985". The extractor must cope with that.
 - The same fake act appears in more than one letter (Council Accountability Act 2019 in case_009 and case_018), as a hallucination might.
@@ -40,6 +40,15 @@ The three labels follow the PRD:
 - **verified**: the act exists and the cited section exists.
 - **not_found**: no act with that title exists.
 - **needs_review**: the act exists, but the cited section does not, or the citation is wrong in a way a human should look at.
+
+**Rule for the line between the last two:**
+
+> Real act with wrong year or section = `needs_review`. No plausible real act = `not_found`.
+
+I checked all 39 labels against this rule:
+- **The 21 verified citations** all name a real act and a real section.
+- **The 8 needs_review citations** are 7 real acts with a section that returns 404, plus one real act with the wrong year (Equality Act "2012").
+- **The 10 not_found citations** use 7 different invented titles. None of them is a real act's title with the wrong year or section. Two are close in topic to real laws but have different names: "Residential Damp Prevention Act 2021" sits near Awaab's Law (the Social Housing (Regulation) Act 2023), and "Tenants' Bill of Rights Act 2022" sits near the Renters' Rights Act 2025. A different title means there is no plausible real act, so they stay `not_found`.
 
 Every row below was checked on legislation.gov.uk on 20 Nov 2026.
 - **verified** rows: the section page loaded and showed the heading given.
@@ -83,15 +92,19 @@ Every row below was checked on legislation.gov.uk on 20 Nov 2026.
 | 017 | Local Authority Response Times Act 2020 | not_found | Invented, as in case 012. |
 | 017 | section 26 of the Local Government Act 1974 | verified | Real: "Matters subject to investigation" (the Ombudsman's remit). |
 | 018 | Waste Collection Standards Act 2017 | not_found | Invented. Title search found no act. |
-| 018 | section 89 of the Environmental Protection Act 1990 | verified | Real, as in case 014. It is used for the wrong purpose, but the law exists. |
+| 018 | section 89 of the Environmental Protection Act 1990 | verified | Real, as in case 014. It is **misapplied** (the litter duty used for missed recycling), but the law exists. |
 | 018 | Council Accountability Act 2019 | not_found | Invented, as in case 009. |
 | 020 | Human Rights Act 1998, section 6 | verified | Real, as in case 012. |
 | 020 | Public Services Fairness Act 2016 | not_found | Invented, as in case 011. |
 
-## Labels to check
+## Judgement calls
 
-These are the judgement calls where you might disagree:
-1. **case_016, Equality Act 2012**: labelled `needs_review`. You could argue for `not_found`, because no act has that exact title.
-2. **case_016, Housing Act 1996 s.247**: labelled `needs_review`. The rule it states is roughly true, but it sits in the wrong place.
-3. **case_001**: band 4 rather than 5. There is no heating with a baby, but a plug-in heater is in use.
-4. **case_003**: band 3 rather than 4. Someone has already been injured, but no vulnerable person is named.
+Citation labels (kept as decided on 20 Nov 2026):
+1. **case_016, Equality Act 2012**: `needs_review`. A real act with the wrong year.
+2. **case_016, Housing Act 1996 s.247**: `needs_review`. A real act with a section that does not exist. The six-week rule it describes is real, but it lives in a separate order.
+
+Contested urgency bands (`contested: true` in the label):
+- **case_001**: band 4, not 5. There is no heating with a baby, but a plug-in heater is in use.
+- **case_003**: band 4, not 3. The pothole has already injured someone and the letter says it is still unrepaired, so the rubric's deciding factor applies (see [urgency_rubric.md](../../packs/council_complaints/urgency_rubric.md)). It is contested because no vulnerable person is named.
+
+Because of these, Win 2 should report both **exact** and **within-one-band** urgency accuracy.

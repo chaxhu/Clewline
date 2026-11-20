@@ -183,6 +183,13 @@ def test_case_label_valid():
     label = make_label()
     assert label.issues[0].span == Span(start=3, end=9)
     assert label.citations == []
+    assert label.contested is False  # default
+
+
+def test_case_label_contested_flag():
+    assert make_label(contested=True).contested is True
+    with pytest.raises(ValidationError):
+        make_label(contested="maybe")
 
 
 @pytest.mark.parametrize(

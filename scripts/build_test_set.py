@@ -35,6 +35,7 @@ def letter(text: str) -> str:
 
 # Each entry:
 #   id, received, channel, style ("human" or "ai"), text, band
+#   contested: optional, True when the band is a judgement call between two bands
 #   issues:    list of (summary, category, quote)
 #   citations: list of (quote, normalised_ref, status)
 #   notes:     why the band was chosen
@@ -43,7 +44,7 @@ ENTRIES = [
     # Short, human-style letters
     # ------------------------------------------------------------------
     dict(
-        id="case_001", received="2026-11-04", channel="email", style="human", band=4,
+        id="case_001", received="2026-11-04", channel="email", style="human", band=4, contested=True,
         text=letter("""
             hi, our boiler has been broken since the 2nd and nobody has come out. ive rang 4 times.
             its freezing at night and i have a 7 month old baby so we are using a little plug in heater
@@ -53,7 +54,8 @@ ENTRIES = [
         issues=[("Boiler broken for days with no repair visit", "housing_repairs",
                  "our boiler has been broken since the 2nd and nobody has come out")],
         citations=[],
-        notes="Band 4: no heating in cold weather with an infant in the home.",
+        notes="Band 4: no heating in cold weather with an infant in the home. "
+              "Contested 4 vs 5: a plug-in heater is in use, so no immediate danger to life.",
     ),
     dict(
         id="case_002", received="2026-10-15", channel="web_form", style="human", band=2,
@@ -67,7 +69,7 @@ ENTRIES = [
         notes="Band 2: repeated routine failure, no health or safety impact.",
     ),
     dict(
-        id="case_003", received="2026-10-21", channel="letter", style="human", band=3,
+        id="case_003", received="2026-10-21", channel="letter", style="human", band=4, contested=True,
         text=letter("""
             Dear Sir/Madam,
 
@@ -82,7 +84,8 @@ ENTRIES = [
         issues=[("Reported pothole not repaired and has caused a fall", "highways",
                  "There is a large pothole outside 9 Brackley Road which has been there since August.")],
         citations=[("section 41 of the Highways Act 1980", "Highways Act 1980, s.41", "verified")],
-        notes="Band 3: ongoing hazard that has already caused an injury, but no immediate danger to life.",
+        notes="Band 4: the pothole has already caused an injury and is still unrepaired "
+              "('nothing has happened', 'Please repair it'). Contested 3 vs 4: no vulnerable person is named.",
     ),
     dict(
         id="case_004", received="2026-11-09", channel="phone", style="human", band=5,
@@ -395,7 +398,8 @@ ENTRIES = [
             ("Highways Pothole Compensation Act 2018", "Highways Pothole Compensation Act 2018", "not_found"),
             ("Section 89 of the\nEnvironmental Protection Act 1990", "Environmental Protection Act 1990, s.89", "verified"),
         ],
-        notes="Band 3: trip hazard has already caused falls; fly-tipping is ongoing. No immediate danger to life.",
+        notes="Band 3: people have tripped but no injury is reported, so the band 4 "
+              "'injury and hazard still present' rule does not apply. Fly-tipping is ongoing.",
     ),
     dict(
         id="case_015", received="2026-11-03", channel="email", style="ai", band=3,
@@ -551,7 +555,9 @@ ENTRIES = [
             ("section 89 of the\nEnvironmental Protection Act 1990", "Environmental Protection Act 1990, s.89", "verified"),
             ("Council Accountability\nAct 2019", "Council Accountability Act 2019", "not_found"),
         ],
-        notes="Band 2: repeated missed collection, no health or safety impact.",
+        notes="Band 2: repeated missed collection, no health or safety impact. "
+              "Citation EPA 1990 s.89 is misapplied: it is the litter duty, used here for missed recycling. "
+              "It stays verified because the law and section exist.",
     ),
     dict(
         id="case_020", received="2026-11-12", channel="email", style="ai", band=1,
@@ -617,6 +623,7 @@ def build_entry(entry: dict) -> tuple[Case, CaseLabel]:
         issues=issues,
         urgency_band=entry["band"],
         citations=citations,
+        contested=entry.get("contested", False),
         notes=f"style: {entry['style']}. {entry['notes']}",
     )
     return case, label

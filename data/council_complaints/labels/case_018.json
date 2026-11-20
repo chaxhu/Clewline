@@ -40,5 +40,6 @@
       }
     }
   ],
-  "notes": "style: ai. Band 2: repeated missed collection, no health or safety impact."
+  "contested": false,
+  "notes": "style: ai. Band 2: repeated missed collection, no health or safety impact. Citation EPA 1990 s.89 is misapplied: it is the litter duty, used here for missed recycling. It stays verified because the law and section exist."
 }

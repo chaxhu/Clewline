@@ -69,6 +69,13 @@ def test_categories_are_from_the_pack(case_id):
         assert issue.category in CATEGORIES
 
 
+def test_contested_cases_are_explained():
+    contested = [cid for cid in CASE_IDS if load_label(cid).contested]
+    assert contested == ["case_001", "case_003"]
+    for cid in contested:
+        assert "Contested" in load_label(cid).notes
+
+
 def test_mix_covers_every_band_and_every_status():
     labels = [load_label(cid) for cid in CASE_IDS]
     assert {lab.urgency_band for lab in labels} == {1, 2, 3, 4, 5}

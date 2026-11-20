@@ -141,4 +141,8 @@ class CaseLabel(StrictModel):
     issues: list[Issue] = Field(min_length=1)
     urgency_band: int = Field(ge=1, le=5)
     citations: list[Citation] = Field(default_factory=list)
+    # True when the urgency band is a judgement call between two neighbouring bands.
+    # Evaluations should report exact and within-one-band accuracy, and may
+    # show contested cases separately.
+    contested: bool = False
     notes: str | None = None  # free-text labelling rationale for human reviewers

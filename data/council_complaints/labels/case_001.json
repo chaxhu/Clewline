@@ -12,5 +12,6 @@
   ],
   "urgency_band": 4,
   "citations": [],
-  "notes": "style: human. Band 4: no heating in cold weather with an infant in the home."
+  "contested": true,
+  "notes": "style: human. Band 4: no heating in cold weather with an infant in the home. Contested 4 vs 5: a plug-in heater is in use, so no immediate danger to life."
 }

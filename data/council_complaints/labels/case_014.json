@@ -57,5 +57,6 @@
       }
     }
   ],
-  "notes": "style: ai. Band 3: trip hazard has already caused falls; fly-tipping is ongoing. No immediate danger to life."
+  "contested": false,
+  "notes": "style: ai. Band 3: people have tripped but no injury is reported, so the band 4 'injury and hazard still present' rule does not apply. Fly-tipping is ongoing."
 }

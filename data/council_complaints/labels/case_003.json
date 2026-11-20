@@ -10,7 +10,7 @@
       }
     }
   ],
-  "urgency_band": 3,
+  "urgency_band": 4,
   "citations": [
     {
       "raw_text": "section 41 of the Highways Act 1980",
@@ -22,5 +22,6 @@
       }
     }
   ],
-  "notes": "style: human. Band 3: ongoing hazard that has already caused an injury, but no immediate danger to life."
+  "contested": true,
+  "notes": "style: human. Band 4: the pothole has already caused an injury and is still unrepaired ('nothing has happened', 'Please repair it'). Contested 3 vs 4: no vulnerable person is named."
 }
