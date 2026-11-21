@@ -6,7 +6,8 @@
 #   - the optional AI gateway service is removed;
 #   - every password and key comes from .env. There are no fallback values, so if a
 #     secret is missing, compose stops with an error instead of starting with a weak default;
-#   - every port is bound to 127.0.0.1, so only this machine can connect;
+#   - only langfuse-web is published to the host (127.0.0.1:3000). Every other service
+#     is reachable only inside the Docker network, by service name (postgres, redis...);
 #   - telemetry to Langfuse is off by default.
 #
 # First time:   uv run python scripts/generate_secrets.py
@@ -30,8 +31,7 @@ services:
         condition: service_healthy
       clickhouse:
         condition: service_healthy
-    ports:
-      - 127.0.0.1:3030:3030
+    # No host port: the worker only pulls jobs from Redis; nothing on Windows calls it.
     environment: &langfuse-env
       NEXTAUTH_URL: http://localhost:3000
       DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is not set. Run scripts/generate_secrets.py}@postgres:5432/postgres
@@ -89,9 +89,7 @@ services:
     volumes:
       - langfuse_clickhouse_data:/var/lib/clickhouse
       - langfuse_clickhouse_logs:/var/log/clickhouse-server
-    ports:
-      - 127.0.0.1:8123:8123
-      - 127.0.0.1:9000:9000
+    # No host port: only langfuse-web and langfuse-worker query it, over the Docker network.
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:8123/ping || exit 1
       interval: 5s
@@ -109,9 +107,10 @@ services:
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minio}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?MINIO_ROOT_PASSWORD is not set. Run scripts/generate_secrets.py}
-    ports:
-      - 127.0.0.1:9090:9000
-      - 127.0.0.1:9091:9001
+    # No host port. Trace events reach MinIO through langfuse-web, inside Docker.
+    # The host would only need it for media uploads (images, audio, PDFs attached to
+    # traces), which this project does not send. To enable them later, add:
+    #   ports: ["127.0.0.1:9090:9000"]
     volumes:
       - langfuse_minio_data:/data
     healthcheck:
@@ -128,8 +127,7 @@ services:
     command: >
       --requirepass ${REDIS_AUTH:?REDIS_AUTH is not set. Run scripts/generate_secrets.py}
       --maxmemory-policy noeviction
-    ports:
-      - 127.0.0.1:6379:6379
+    # No host port: only the Langfuse containers use the queue.
     volumes:
       - langfuse_redis_data:/data
     healthcheck:
@@ -153,8 +151,8 @@ services:
       POSTGRES_DB: postgres
       TZ: UTC
       PGTZ: UTC
-    ports:
-      - 127.0.0.1:5432:5432
+    # No host port: only the Langfuse containers connect. This also avoids clashes with
+    # Windows reserved port ranges or a local Postgres on 5432.
     volumes:
       - langfuse_postgres_data:/var/lib/postgresql/data
 
