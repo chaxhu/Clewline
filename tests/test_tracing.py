@@ -1,5 +1,6 @@
 """Tests for core/tracing.py and scripts/generate_secrets.py. No network calls."""
 
+import os
 import re
 
 import pytest
@@ -28,9 +29,37 @@ def test_tracing_configured_needs_every_var(monkeypatch, missing):
     assert not tracing.tracing_configured()
 
 
-def test_check_connection_false_without_keys(monkeypatch):
+def test_check_connection_false_without_keys(monkeypatch, capsys):
     monkeypatch.delenv("LANGFUSE_SECRET_KEY", raising=False)
     assert tracing.check_connection() is False
+    assert "LANGFUSE_SECRET_KEY" in capsys.readouterr().err
+
+
+def test_check_connection_prints_real_error(monkeypatch, capsys):
+    for name in tracing.REQUIRED_VARS:
+        monkeypatch.setenv(name, "test-value")
+
+    class BrokenClient:
+        def auth_check(self):
+            raise ConnectionError("connection refused")
+
+    monkeypatch.setattr(tracing, "get_langfuse", lambda: BrokenClient())
+    assert tracing.check_connection() is False
+    err = capsys.readouterr().err
+    assert "ConnectionError: connection refused" in err
+
+
+# ---------- trace tags ----------
+
+def test_trace_tags_are_set_by_default():
+    assert os.environ["OTEL_SERVICE_NAME"] == "clewline"
+    assert os.environ["LANGFUSE_TRACING_ENVIRONMENT"] == "dev"
+
+
+def test_git_release_looks_like_a_commit():
+    release = tracing.git_release()
+    assert release is not None
+    assert re.fullmatch(r"[0-9a-f]{7,40}(-dirty)?", release)
 
 
 # ---------- generate_secrets ----------

@@ -53,6 +53,19 @@ uv run python scripts/send_test_trace.py
 
 It prints a link. Open it, or go to **Tracing** in the left menu. You should see one trace called `test_trace_pipeline`, with one span called `count_words` nested inside it.
 
+**Troubleshooting on Windows.** If `send_test_trace.py` says it could not authenticate:
+- Read the error line it prints. A refused connection or timeout means the address is wrong or Langfuse is not up yet. `401 Unauthorized` means the keys are wrong.
+- Set `LANGFUSE_BASE_URL=http://127.0.0.1:3000` in `.env`. On Windows, `localhost` can resolve to the IPv6 address `::1` first, but Docker only publishes the port on IPv4 `127.0.0.1`.
+- Check that both keys come from the same project, and from this local Langfuse rather than Langfuse Cloud. A public key from one project with a secret key from another will be rejected.
+- Run `docker compose ps` and make sure `langfuse-web` is running.
+
+**What every trace is tagged with.** [core/tracing.py](core/tracing.py) sets three tags before the Langfuse client starts:
+- service name `clewline`
+- environment `dev`
+- release: the current git commit, for example `dc5cec8`, with `-dirty` added if there are uncommitted changes
+
+These tags show which code produced each trace. To override them, put `OTEL_SERVICE_NAME`, `LANGFUSE_TRACING_ENVIRONMENT` or `LANGFUSE_RELEASE` in `.env`.
+
 To stop Langfuse, run `docker compose down`. Your data is kept. `docker compose down -v` deletes it.
 
 ## Layout
