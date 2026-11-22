@@ -8,7 +8,11 @@ Two kinds of test run:
 
 pytest_configure runs before any test module is imported, so it runs before the
 Langfuse client is created. load_dotenv() never overrides a value that is already
-set, so the switch below wins over .env.
+set, so the switches below win over .env.
+
+Evaluation runs also turn the Gemini -> Mistral fallback OFF, so every score
+comes from one model and a failed call is counted as an error. To compare on
+purpose with it on:  MODEL_FALLBACK=on uv run pytest -m eval
 """
 
 import os
@@ -19,3 +23,5 @@ def pytest_configure(config):
     selects_real_runs = not markexpr.startswith("not") and ("live" in markexpr or "eval" in markexpr)
     if not selects_real_runs:
         os.environ["LANGFUSE_TRACING_ENABLED"] = "false"
+    if selects_real_runs and "eval" in markexpr:
+        os.environ.setdefault("MODEL_FALLBACK", "off")  # a value set in the shell still wins

@@ -78,12 +78,33 @@ llm = get_chat_model("openai")    # the same code on another provider
 print(llm.invoke("Hello").text)
 ```
 
-Every model it returns is already connected to Langfuse, so each call is traced with tokens and cost. Model names are set in `.env` (`GEMINI_MODEL`, `OPENAI_MODEL`).
+Every model it returns is already connected to Langfuse, so each call is traced with tokens and cost. Model names are set in `.env` (`GEMINI_MODEL`, `OPENAI_MODEL`, `MISTRAL_MODEL`).
 
 ```bash
 uv run pytest              # unit tests only: offline, nothing traced
 uv run pytest -m live -s   # one real, traced call per provider whose key is set
 ```
+
+### Fallback from Gemini to Mistral
+
+If a Gemini call fails, the same request goes to Mistral. Only call failures count: a rate limit (429), a server error (5xx), a timeout or a lost connection. A bad request, a wrong key or a reply that does not parse never triggers it, because another model would not fix those.
+
+When a fallback happens, the trace shows it in three places:
+- the failed Gemini call, marked as an error
+- a `model_fallback` event, with the reason (for example `rate_limit`)
+- the Mistral call, with `provider: mistral` in its metadata
+
+So a trace never says Gemini answered when Mistral did.
+
+**When it is on and off:**
+
+| Run | Fallback | Why |
+| --- | --- | --- |
+| Normal use, scripts, the UI | On (`MODEL_FALLBACK=on`) | A case should not get stuck because of a short Gemini outage. |
+| Evaluation runs (`pytest -m eval`) | Off | Every score must come from one model. A failed call is counted as an error, not as a wrong answer. |
+| Live smoke tests (`pytest -m live`) | Off | Each test must prove that its own provider answered. |
+
+To turn it off everywhere, set `MODEL_FALLBACK=off` in `.env`. A single step can also choose with `get_chat_model(fallback=False)`. If `MISTRAL_API_KEY` is not set, the fallback switches itself off with a warning.
 
 ## Layout
 
