@@ -68,6 +68,23 @@ These tags show which code produced each trace. To override them, put `OTEL_SERV
 
 To stop Langfuse, run `docker compose down`. Your data is kept. `docker compose down -v` deletes it.
 
+## Models
+
+```python
+from core.models import get_chat_model
+
+llm = get_chat_model()            # Gemini by default (MODEL_PROVIDER in .env)
+llm = get_chat_model("openai")    # the same code on another provider
+print(llm.invoke("Hello").text)
+```
+
+Every model it returns is already connected to Langfuse, so each call is traced with tokens and cost. Model names are set in `.env` (`GEMINI_MODEL`, `OPENAI_MODEL`).
+
+```bash
+uv run pytest              # unit tests only: offline, nothing traced
+uv run pytest -m live -s   # one real, traced call per provider whose key is set
+```
+
 ## Layout
 
 | Folder | What lives there |
