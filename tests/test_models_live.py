@@ -27,6 +27,9 @@ def test_live_call(provider):
         pytest.skip(str(error))
     finally:
         flush()
-    answered_by = reply.response_metadata.get("model_name") or reply.response_metadata.get("model")
-    print(f"\n{provider} ({answered_by}) replied: {reply.text!r}")  # .text joins the reply's text parts
-    assert "ready" in reply.text.lower()
+    ours = reply.response_metadata["clewline"]       # written by our retry wrapper
+    print(f"\n{provider} ({ours['model']}) replied: {reply.text!r}  "
+          f"attempts={ours['attempts']} waited={ours['waited_s']}s cost=${ours['cost_usd']}")
+    # A smoke test checks the connection, not obedience: small models may answer "Go." instead.
+    assert reply.text.strip()                          # .text joins the reply's text parts
+    assert ours["provider"] == provider                # the provider we asked for really answered

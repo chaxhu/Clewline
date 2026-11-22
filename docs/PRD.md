@@ -143,6 +143,22 @@ We prove value first, then wrap it in the engine. Foundations come first, then t
 
 Each of these gets its own detailed section in this PRD once the win before it is done.
 
+### Possible later win: more free providers and rate-limit control
+
+Paused on 22 Nov 2026 to finish the foundations. Today the model wrapper has OpenAI (default), Gemini (fallback) and Mistral (off by default), with simple retries and a spend cap. This win would add:
+
+- **More free providers** through one OpenAI-compatible adapter (`ChatOpenAI` with a `base_url`): Groq, Cerebras and OpenRouter's `:free` models. Model ids come from each provider's `/models` endpoint, never guessed.
+- **An ordered fallback chain** from `.env`, for example `MODEL_FALLBACK_CHAIN=openai,gemini,groq`, skipping providers without a key. Every hop is recorded in the trace.
+- **Pacing** to stay about 20% under each provider's free-tier requests and tokens per minute, with one shared limiter per provider.
+- **Daily quotas** tracked in a local SQLite file, with a clear `QuotaExhausted` error before a call we know will fail, and an evaluation pre-flight that says how many cases fit today.
+- **A data and terms table** per provider: free limits, whether free prompts may be used for training, company country, and the date checked.
+
+What we found when we looked (22 Nov 2026):
+- Groq and Cerebras both retired Llama 3.3 70B. Their large free model is now `gpt-oss-120b`.
+- Cerebras's free tier is a $5 trial that needs a card and lasts 30 days.
+- OpenRouter's free models allow 50 requests a day, or 1,000 once $10 of credit has been bought.
+- Mistral's free mode trains on prompts unless you opt out.
+
 ## Domain pack boundary
 
 Everything industry-specific lives in one folder per domain, so the engine never hard-codes council details. A pack holds:

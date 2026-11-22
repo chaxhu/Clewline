@@ -73,28 +73,46 @@ To stop Langfuse, run `docker compose down`. Your data is kept. `docker compose 
 ```python
 from core.models import get_chat_model
 
-llm = get_chat_model()            # Gemini by default (MODEL_PROVIDER in .env)
-llm = get_chat_model("openai")    # the same code on another provider
+llm = get_chat_model()            # OpenAI by default (MODEL_PROVIDER in .env)
+llm = get_chat_model("gemini")    # the same code on another provider
 print(llm.invoke("Hello").text)
 ```
 
-Every model it returns is already connected to Langfuse, so each call is traced with tokens and cost. Model names are set in `.env` (`GEMINI_MODEL`, `OPENAI_MODEL`, `MISTRAL_MODEL`).
+Every model it returns is already connected to Langfuse, so each call is traced with tokens and cost. Model names are set in `.env`.
+
+| Provider | Default model | Role | Why this model |
+| --- | --- | --- | --- |
+| OpenAI | `gpt-6-luna` | Default | Cheapest current OpenAI model with structured outputs: $0.10 in, $0.50 out per 1M tokens (checked 22 Nov 2026). `gpt-5-nano` and `gpt-5-mini` shut down on 11 Dec 2026. |
+| Gemini | `gemini-3.8-flash` | Fallback | Free tier. |
+| Mistral | `ministral-8b-2512` | Off by default | The free plan allows 2 requests a minute on this model, and 0 on `mistral-small-2603`. |
+
+### Retries
+
+The provider libraries' own retries are switched off, so only ours run. A call is tried up to 4 times (`MODEL_MAX_ATTEMPTS`):
+- **Retried:** 429 (rate limit), 5xx such as 503, timeouts and lost connections.
+- **Never retried:** 400, 401, 403 and 404. Trying again would give the same answer.
+- **Wait:** 1s, 2s, 4s and so on, up to 30s, with random jitter so retries do not all land at once. If the server sends `Retry-After`, we wait exactly that long instead. If it asks for more than 60s, we give up at once.
+- **Giving up** raises `RetriesExhausted`, which names the provider, the model, the number of attempts and the reason.
+
+### Spend cap
+
+`MAX_RUN_COST_USD` (default `$0.50`) caps what one run may spend. Each call's cost is worked out from its token counts and the price table in [core/models.py](core/models.py). Once a run reaches the cap, the next call is refused with `SpendCapReached` before it is sent. An evaluation run then stops cleanly and can be resumed. A model missing from the price table is costed at a deliberately high price, with a warning, so the cap still protects you.
 
 ```bash
 uv run pytest              # unit tests only: offline, nothing traced
 uv run pytest -m live -s   # one real, traced call per provider whose key is set
 ```
 
-### Fallback from Gemini to Mistral
+### Fallback from OpenAI to Gemini
 
-If a Gemini call fails, the same request goes to Mistral. Only call failures count: a rate limit (429), a server error (5xx), a timeout or a lost connection. A bad request, a wrong key or a reply that does not parse never triggers it, because another model would not fix those.
+If an OpenAI call still fails after its retries, the same request goes to Gemini. Only call failures count: a rate limit (429), a server error (5xx), a timeout or a lost connection. A bad request, a wrong key, a reply that does not parse and the spend cap never trigger it, because another model would not fix those.
 
 When a fallback happens, the trace shows it in three places:
-- the failed Gemini call, marked as an error
+- the failed OpenAI call, marked as an error
 - a `model_fallback` event, with the reason (for example `rate_limit`)
-- the Mistral call, with `provider: mistral` in its metadata
+- the Gemini call, with `provider: gemini` in its metadata
 
-So a trace never says Gemini answered when Mistral did.
+So a trace never says OpenAI answered when Gemini did.
 
 **When it is on and off:**
 
@@ -104,7 +122,7 @@ So a trace never says Gemini answered when Mistral did.
 | Evaluation runs (`pytest -m eval`) | Off | Every score must come from one model. A failed call is counted as an error, not as a wrong answer. |
 | Live smoke tests (`pytest -m live`) | Off | Each test must prove that its own provider answered. |
 
-To turn it off everywhere, set `MODEL_FALLBACK=off` in `.env`. A single step can also choose with `get_chat_model(fallback=False)`. If `MISTRAL_API_KEY` is not set, the fallback switches itself off with a warning.
+To turn it off everywhere, set `MODEL_FALLBACK=off` in `.env`. A single step can also choose with `get_chat_model(fallback=False)`. If `GOOGLE_API_KEY` is not set, the fallback switches itself off with a warning.
 
 ## Layout
 
