@@ -124,6 +124,38 @@ So a trace never says OpenAI answered when Gemini did.
 
 To turn it off everywhere, set `MODEL_FALLBACK=off` in `.env`. A single step can also choose with `get_chat_model(fallback=False)`. If `GOOGLE_API_KEY` is not set, the fallback switches itself off with a warning.
 
+## Evaluation
+
+[core/evaluation.py](core/evaluation.py) scores any step against the labelled test set and writes a dated report to `reports/`. A step is any function that takes a `Case` and returns a `StepOutput`. It never sees the labels.
+
+```bash
+uv run pytest -m eval                                            # both baselines, full test set
+uv run python scripts/run_eval.py keyword_urgency                # one step
+uv run python scripts/run_eval.py keyword_urgency --cases case_001,case_003
+uv run python scripts/run_eval.py keyword_urgency --limit 5
+uv run python scripts/run_eval.py keyword_urgency --resume       # continue after a stop
+uv run python scripts/run_eval.py keyword_urgency --fresh        # start again
+uv run python scripts/run_eval.py keyword_urgency --max-cost 0.25
+```
+
+What every run does:
+- **Fallback off.** Every score comes from one model.
+- **Errors are not wrong answers.** If a step fails, for example a call that failed after all retries, the case is listed under Errors and left out of the scores.
+- **Progress is saved after every case** in `.cache/eval_runs/`. If the spend cap stops a run, or it crashes, `--resume` carries on: it skips answered cases and tries failed ones again. Without `--resume` or `--fresh`, an unfinished run is never silently thrown away.
+- **Subsets** (`--cases`, `--limit`) get their own report, `reports/<date>_<step>_subset.md`, so they never overwrite a full run.
+- **The report header** gives the status, code version, a fingerprint of the test set, the cases run, the models used, the fallback setting, the spend against the cap, and when the run started and was resumed. Two reports are only comparable when their fingerprints match.
+
+What is scored, when a step returns it:
+
+| Part | Scores |
+| --- | --- |
+| Urgency band | Exact and within one band, for all cases, then split into contested and not contested |
+| Citations | Found (by overlapping text), status right, and recall per status (verified, not_found, needs_review) |
+| Issues | Precision, recall and F1. A match needs the same category and overlapping text |
+| Grounding | Share of predicted issues and citations that link to the source text |
+
+The two baselines in [packs/council_complaints/baselines.py](packs/council_complaints/baselines.py) are the scores every AI step has to beat.
+
 ## Layout
 
 | Folder | What lives there |

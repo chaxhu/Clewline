@@ -26,3 +26,6 @@ langfuse_data/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Evaluation progress files (resume state)
+.cache/
