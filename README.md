@@ -80,6 +80,8 @@ print(llm.invoke("Hello").text)
 
 Every model it returns is already connected to Langfuse, so each call is traced with tokens and cost. Model names are set in `.env`.
 
+Temperature is 0 by default, so runs repeat as closely as possible. `gpt-6-luna` is a reasoning model and rejects any temperature except its default of 1, so for that model we send none. Its trace metadata says `temperature: model default (fixed)`. Two runs on it can give slightly different answers.
+
 | Provider | Default model | Role | Why this model |
 | --- | --- | --- | --- |
 | OpenAI | `gpt-6-luna` | Default | Cheapest current OpenAI model with structured outputs: $0.10 in, $0.50 out per 1M tokens (checked 22 Nov 2026). `gpt-5-nano` and `gpt-5-mini` shut down on 11 Dec 2026. |

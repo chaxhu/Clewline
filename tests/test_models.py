@@ -63,8 +63,20 @@ def fake_clock(monkeypatch):
 def test_default_provider_is_openai():
     llm = get_chat_model()
     assert isinstance(llm, ChatOpenAI)
-    assert llm.temperature == 0.0
     assert llm.model_name == "gpt-6-luna"
+
+
+def test_fixed_temperature_model_sends_no_temperature():
+    # gpt-6-luna returns 400 for any temperature other than its default.
+    llm = get_chat_model("openai")
+    assert llm.temperature is None
+    assert "temperature" not in llm._get_request_payload([("user", "hi")])
+    assert llm.metadata["temperature"] == "model default (fixed)"
+
+
+def test_other_models_keep_temperature_zero():
+    assert get_chat_model("openai", model="gpt-4.1-mini").temperature == 0.0
+    assert get_chat_model("gemini").temperature == 0.0
 
 
 def test_provider_from_env(monkeypatch):

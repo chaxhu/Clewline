@@ -355,9 +355,17 @@ def _with_retries(base: type[BaseChatModel]) -> type[BaseChatModel]:
 # ---- Providers -------------------------------------------------------------------
 # Every builder sets the library's own max_retries to 0, so only our loop retries.
 
+# Reasoning models that reject any temperature except their default (1).
+# For these we send no temperature at all, and the trace metadata says so.
+FIXED_TEMPERATURE_MODELS = {"gpt-6-luna"}
+
+
 def _build_openai(model, api_key, temperature, timeout, metadata) -> BaseChatModel:
     from langchain_openai import ChatOpenAI
 
+    if model in FIXED_TEMPERATURE_MODELS:
+        metadata = {**metadata, "temperature": "model default (fixed)"}
+        temperature = None  # None means ChatOpenAI leaves it out of the request
     return _with_retries(ChatOpenAI)(
         model=model, api_key=api_key, temperature=temperature,
         timeout=timeout, max_retries=0, metadata=metadata,
