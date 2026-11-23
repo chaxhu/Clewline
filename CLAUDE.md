@@ -33,8 +33,10 @@ LangExtract and Langfuse.
 - LangExtract for extraction with source grounding
 - Langfuse (self-hosted with Docker) for tracing, cost and scores
 - httpx for web calls, pytest for tests and evaluation, Streamlit for screens
-- Models: Gemini (free tier) by default; OpenAI only for comparison runs
-  and final evaluations, because credit is limited
+- Models: OpenAI gpt-6-luna by default (cheapest model with structured
+  output), Gemini as the fallback for call failures, Mistral available but
+  off. The fallback is off in evaluation runs. Every run has a spend cap
+  (MAX_RUN_COST_USD, default $0.50).
 
 ## Repository layout
 - core/      schema, model wrapper, tracing, evaluation runner
