@@ -403,13 +403,17 @@ def build_report(state: dict, written_at: datetime) -> dict:
     answered = sum(r["status"] == "ok" for r in rows)
     errors = [r for r in rows if r["status"] == "error"]
     resumed_at = [s["started_at"] for s in state["sessions"] if s["resumed"]]
+    summary = summarise(rows)
+    urgency = summary.get("urgency", {}).get("all")
     header = {
         "step": state["step"],
         "status": state["status"],
         "stop_reason": next((s["outcome"][9:] for s in reversed(state["sessions"]) if (s["outcome"] or "").startswith("stopped")), None)
         if state["status"] == "stopped" else None,
         "written_at": written_at.isoformat(timespec="seconds"),
-        "code_version": git_release() or "unknown",
+        # The same tags Langfuse puts on this run's traces (see core/tracing.py).
+        "environment": os.environ.get("LANGFUSE_TRACING_ENVIRONMENT", "dev"),
+        "release": git_release() or "unknown",
         "test_set": state["data_dir"],
         "test_set_fingerprint": state["fingerprint"],
         "cases_in_test_set": state["dataset_size"],
@@ -425,10 +429,13 @@ def build_report(state: dict, written_at: datetime) -> dict:
         "started_at": state["sessions"][0]["started_at"],
         "resumed": bool(resumed_at),
         "resumed_at": resumed_at,
+        # Headline score, so the header alone answers "how good is it?"
+        "urgency_exact": urgency["exact"] if urgency else None,
+        "urgency_within_one": urgency["within_one"] if urgency else None,
     }
     return {
         "header": header,
-        "summary": summarise(rows),
+        "summary": summary,
         "errors": [{"case_id": r["case_id"], **r["error"]} for r in errors],
         "model_calls": state["model_calls"],
         "rows": rows,
@@ -466,7 +473,8 @@ def render_markdown(report: dict) -> str:
         "| --- | --- |",
         f"| Status | {status} |",
         f"| Written | {h['written_at']} |",
-        f"| Code version | `{h['code_version']}` |",
+        f"| Environment | `{h['environment']}` |",
+        f"| Release | `{h['release']}` (git commit) |",
         f"| Test set | `{h['test_set']}` (fingerprint `{h['test_set_fingerprint']}`) |",
         f"| Cases | {cases} |",
         f"| Answered | {h['answered']} |",
@@ -477,6 +485,8 @@ def render_markdown(report: dict) -> str:
         f"| Spend | ${h['spent_usd']:.4f} of ${h['max_cost_usd']:.2f} cap |",
         f"| Started | {h['started_at']} |",
         f"| Resumed | {resumed} |",
+        *([f"| Urgency accuracy | {_pct(h['urgency_exact'])} exact, {_pct(h['urgency_within_one'])} within one band |"]
+          if h["urgency_exact"] is not None else []),
         "",
         "## Results",
         "",

@@ -198,6 +198,26 @@ def test_full_run_writes_dated_reports(dataset, dirs):
     assert saved["summary"]["urgency"]["all"]["n"] == 3
 
 
+def test_header_shows_environment_release_and_headline(dataset, dirs, monkeypatch):
+    monkeypatch.setenv("LANGFUSE_TRACING_ENVIRONMENT", "eval")
+    monkeypatch.setattr(evaluation, "git_release", lambda: "abc1234")
+    report = run_evaluation(band_step(3), "headline", dataset, now=Clock(), **dirs)
+    h = report["header"]
+    assert (h["environment"], h["release"]) == ("eval", "abc1234")
+    urgency = report["summary"]["urgency"]["all"]
+    assert (h["urgency_exact"], h["urgency_within_one"]) == (urgency["exact"], urgency["within_one"])
+    md = (dirs["reports_dir"] / "2026-11-22_headline.md").read_text(encoding="utf-8")
+    assert "| Environment | `eval` |" in md and "| Release | `abc1234` (git commit) |" in md
+    assert "| Urgency accuracy |" in md and "within one band |" in md
+
+
+def test_header_has_no_urgency_line_when_urgency_is_not_scored(dataset, dirs):
+    report = run_evaluation(lambda case: StepOutput(citations=[]), "no_urgency", dataset, now=Clock(), **dirs)
+    assert report["header"]["urgency_exact"] is None
+    md = (dirs["reports_dir"] / "2026-11-22_no_urgency.md").read_text(encoding="utf-8")
+    assert "Urgency accuracy" not in md
+
+
 def test_step_errors_are_counted_separately(dataset, dirs):
     def flaky(case):
         if case.id == "case_b":

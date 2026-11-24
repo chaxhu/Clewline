@@ -11,10 +11,15 @@ The model fallback is always off here, so every score comes from one model.
 """
 
 import argparse
+import os
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # so `core` imports when run as a script
+
+# Tag this run's traces and report as "eval", not "dev". It must be set before
+# core.tracing is imported, because the Langfuse client reads it at start-up.
+os.environ.setdefault("LANGFUSE_TRACING_ENVIRONMENT", "eval")
 
 from core.evaluation import DatasetError, RunInProgress, run_evaluation  # noqa: E402
 from packs.council_complaints import DATA_DIR  # noqa: E402
