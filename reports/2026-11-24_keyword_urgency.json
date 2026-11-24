@@ -1,0 +1,410 @@
+{
+  "header": {
+    "step": "keyword_urgency",
+    "status": "complete",
+    "stop_reason": null,
+    "written_at": "2026-11-24T01:33:29+00:00",
+    "environment": "eval",
+    "release": "69df12c",
+    "test_set": "data/council_complaints",
+    "test_set_fingerprint": "21adb284ff82",
+    "cases_in_test_set": 20,
+    "cases_selected": 20,
+    "subset": null,
+    "answered": 20,
+    "errors": 0,
+    "not_run": 0,
+    "models_used": null,
+    "fallback": "off",
+    "spent_usd": 0.0,
+    "max_cost_usd": 0.5,
+    "started_at": "2026-11-24T01:33:28+00:00",
+    "resumed": false,
+    "resumed_at": [],
+    "urgency_exact": 0.45,
+    "urgency_within_one": 0.9
+  },
+  "summary": {
+    "urgency": {
+      "all": {
+        "n": 20,
+        "exact": 0.45,
+        "within_one": 0.9
+      },
+      "not_contested": {
+        "n": 18,
+        "exact": 0.5,
+        "within_one": 0.8888888888888888
+      },
+      "contested": {
+        "n": 2,
+        "exact": 0.0,
+        "within_one": 1.0
+      }
+    }
+  },
+  "errors": [],
+  "model_calls": {},
+  "rows": [
+    {
+      "case_id": "case_001",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 4,
+          "predicted": 3,
+          "contested": true,
+          "exact": false,
+          "within_one": true
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:28+00:00"
+    },
+    {
+      "case_id": "case_002",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 2,
+          "predicted": 2,
+          "contested": false,
+          "exact": true,
+          "within_one": true
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:28+00:00"
+    },
+    {
+      "case_id": "case_003",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 4,
+          "predicted": 3,
+          "contested": true,
+          "exact": false,
+          "within_one": true
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:28+00:00"
+    },
+    {
+      "case_id": "case_004",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 5,
+          "predicted": 3,
+          "contested": false,
+          "exact": false,
+          "within_one": false
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:28+00:00"
+    },
+    {
+      "case_id": "case_005",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 1,
+          "predicted": 1,
+          "contested": false,
+          "exact": true,
+          "within_one": true
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:28+00:00"
+    },
+    {
+      "case_id": "case_006",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 3,
+          "predicted": 3,
+          "contested": false,
+          "exact": true,
+          "within_one": true
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:28+00:00"
+    },
+    {
+      "case_id": "case_007",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 2,
+          "predicted": 2,
+          "contested": false,
+          "exact": true,
+          "within_one": true
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:28+00:00"
+    },
+    {
+      "case_id": "case_008",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 5,
+          "predicted": 5,
+          "contested": false,
+          "exact": true,
+          "within_one": true
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:28+00:00"
+    },
+    {
+      "case_id": "case_009",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 2,
+          "predicted": 2,
+          "contested": false,
+          "exact": true,
+          "within_one": true
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:29+00:00"
+    },
+    {
+      "case_id": "case_010",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 4,
+          "predicted": 4,
+          "contested": false,
+          "exact": true,
+          "within_one": true
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:29+00:00"
+    },
+    {
+      "case_id": "case_011",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 3,
+          "predicted": 4,
+          "contested": false,
+          "exact": false,
+          "within_one": true
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:29+00:00"
+    },
+    {
+      "case_id": "case_012",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 4,
+          "predicted": 3,
+          "contested": false,
+          "exact": false,
+          "within_one": true
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:29+00:00"
+    },
+    {
+      "case_id": "case_013",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 2,
+          "predicted": 2,
+          "contested": false,
+          "exact": true,
+          "within_one": true
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:29+00:00"
+    },
+    {
+      "case_id": "case_014",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 3,
+          "predicted": 4,
+          "contested": false,
+          "exact": false,
+          "within_one": true
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:29+00:00"
+    },
+    {
+      "case_id": "case_015",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 3,
+          "predicted": 3,
+          "contested": false,
+          "exact": true,
+          "within_one": true
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:29+00:00"
+    },
+    {
+      "case_id": "case_016",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 4,
+          "predicted": 3,
+          "contested": false,
+          "exact": false,
+          "within_one": true
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:29+00:00"
+    },
+    {
+      "case_id": "case_017",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 3,
+          "predicted": 2,
+          "contested": false,
+          "exact": false,
+          "within_one": true
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:29+00:00"
+    },
+    {
+      "case_id": "case_018",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 2,
+          "predicted": 3,
+          "contested": false,
+          "exact": false,
+          "within_one": true
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:29+00:00"
+    },
+    {
+      "case_id": "case_019",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 1,
+          "predicted": 4,
+          "contested": false,
+          "exact": false,
+          "within_one": false
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:29+00:00"
+    },
+    {
+      "case_id": "case_020",
+      "status": "ok",
+      "scores": {
+        "urgency": {
+          "gold": 1,
+          "predicted": 2,
+          "contested": false,
+          "exact": false,
+          "within_one": true
+        },
+        "grounding": {
+          "items": 0,
+          "grounded": 0
+        }
+      },
+      "finished_at": "2026-11-24T01:33:29+00:00"
+    }
+  ]
+}
