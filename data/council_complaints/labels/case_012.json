@@ -1,0 +1,62 @@
+{
+  "case_id": "case_012",
+  "issues": [
+    {
+      "summary": "Care needs assessment delayed over four months for frail 84-year-old who has fallen",
+      "category": "adult_social_care",
+      "span": {
+        "start": 262,
+        "end": 321
+      }
+    },
+    {
+      "summary": "Social worker was dismissive on the phone",
+      "category": "staff_conduct",
+      "span": {
+        "start": 574,
+        "end": 617
+      }
+    }
+  ],
+  "urgency_band": 4,
+  "citations": [
+    {
+      "raw_text": "section 9 of the Care Act 2014",
+      "normalised_ref": "Care Act 2014, s.9",
+      "status": "verified",
+      "span": {
+        "start": 741,
+        "end": 771
+      }
+    },
+    {
+      "raw_text": "section 150 of the Care Act 2014",
+      "normalised_ref": "Care Act 2014, s.150",
+      "status": "needs_review",
+      "span": {
+        "start": 876,
+        "end": 908
+      }
+    },
+    {
+      "raw_text": "Local Authority\nResponse Times Act 2020",
+      "normalised_ref": "Local Authority Response Times Act 2020",
+      "status": "not_found",
+      "span": {
+        "start": 983,
+        "end": 1022
+      }
+    },
+    {
+      "raw_text": "section 6 of the Human Rights Act 1998",
+      "normalised_ref": "Human Rights Act 1998, s.6",
+      "status": "verified",
+      "span": {
+        "start": 1103,
+        "end": 1141
+      }
+    }
+  ],
+  "contested": false,
+  "notes": "style: ai. Band 4: older person living alone has already fallen twice while waiting."
+}

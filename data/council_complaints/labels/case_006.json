@@ -1,0 +1,35 @@
+{
+  "case_id": "case_006",
+  "issues": [
+    {
+      "summary": "Neighbour plays loud music late at night",
+      "category": "noise_asb",
+      "span": {
+        "start": 0,
+        "end": 74
+      }
+    },
+    {
+      "summary": "Noise diary submitted but no call back",
+      "category": "complaint_handling",
+      "span": {
+        "start": 95,
+        "end": 169
+      }
+    }
+  ],
+  "urgency_band": 3,
+  "citations": [
+    {
+      "raw_text": "Environmental Protection Act 1990 s79",
+      "normalised_ref": "Environmental Protection Act 1990, s.79",
+      "status": "verified",
+      "span": {
+        "start": 220,
+        "end": 257
+      }
+    }
+  ],
+  "contested": false,
+  "notes": "style: human. Band 3: ongoing nuisance over weeks, no safety risk."
+}

@@ -1,0 +1,17 @@
+{
+  "case_id": "case_002",
+  "issues": [
+    {
+      "summary": "Green bin collection repeatedly missed",
+      "category": "waste_recycling",
+      "span": {
+        "start": 0,
+        "end": 62
+      }
+    }
+  ],
+  "urgency_band": 2,
+  "citations": [],
+  "contested": false,
+  "notes": "style: human. Band 2: repeated routine failure, no health or safety impact."
+}

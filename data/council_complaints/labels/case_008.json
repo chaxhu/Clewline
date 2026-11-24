@@ -1,0 +1,35 @@
+{
+  "case_id": "case_008",
+  "issues": [
+    {
+      "summary": "Family with children homeless tonight",
+      "category": "homelessness",
+      "span": {
+        "start": 46,
+        "end": 77
+      }
+    },
+    {
+      "summary": "Turned away at housing office and told to return Monday",
+      "category": "staff_conduct",
+      "span": {
+        "start": 117,
+        "end": 190
+      }
+    }
+  ],
+  "urgency_band": 5,
+  "citations": [
+    {
+      "raw_text": "Housing Act 1996 section 188",
+      "normalised_ref": "Housing Act 1996, s.188",
+      "status": "verified",
+      "span": {
+        "start": 240,
+        "end": 268
+      }
+    }
+  ],
+  "contested": false,
+  "notes": "style: human. Band 5: family with two children has nowhere to sleep tonight."
+}

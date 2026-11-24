@@ -1,0 +1,62 @@
+{
+  "case_id": "case_011",
+  "issues": [
+    {
+      "summary": "Assisted bin collection withdrawn without notice",
+      "category": "waste_recycling",
+      "span": {
+        "start": 312,
+        "end": 367
+      }
+    },
+    {
+      "summary": "Council keeps phoning a resident with a hearing impairment who asked for email",
+      "category": "equality_access",
+      "span": {
+        "start": 621,
+        "end": 714
+      }
+    }
+  ],
+  "urgency_band": 3,
+  "citations": [
+    {
+      "raw_text": "section 20 of the Equality Act 2010",
+      "normalised_ref": "Equality Act 2010, s.20",
+      "status": "verified",
+      "span": {
+        "start": 756,
+        "end": 791
+      }
+    },
+    {
+      "raw_text": "section 149 of the Equality Act 2010",
+      "normalised_ref": "Equality Act 2010, s.149",
+      "status": "verified",
+      "span": {
+        "start": 936,
+        "end": 972
+      }
+    },
+    {
+      "raw_text": "section 412\nof the Equality Act 2010",
+      "normalised_ref": "Equality Act 2010, s.412",
+      "status": "needs_review",
+      "span": {
+        "start": 987,
+        "end": 1023
+      }
+    },
+    {
+      "raw_text": "Public Services Fairness Act 2016",
+      "normalised_ref": "Public Services Fairness Act 2016",
+      "status": "not_found",
+      "span": {
+        "start": 1118,
+        "end": 1151
+      }
+    }
+  ],
+  "contested": false,
+  "notes": "style: ai. Band 3: ongoing failure affecting a disabled resident, but no immediate danger."
+}

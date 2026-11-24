@@ -1,0 +1,53 @@
+{
+  "case_id": "case_017",
+  "issues": [
+    {
+      "summary": "Account sent to enforcement agents while discount dispute is open",
+      "category": "council_tax",
+      "span": {
+        "start": 412,
+        "end": 460
+      }
+    },
+    {
+      "summary": "Call handler was rude and ended the call",
+      "category": "staff_conduct",
+      "span": {
+        "start": 685,
+        "end": 772
+      }
+    }
+  ],
+  "urgency_band": 3,
+  "citations": [
+    {
+      "raw_text": "Local Government Finance Act 1992\n(section 11)",
+      "normalised_ref": "Local Government Finance Act 1992, s.11",
+      "status": "verified",
+      "span": {
+        "start": 513,
+        "end": 559
+      }
+    },
+    {
+      "raw_text": "Local Authority Response Times\nAct 2020",
+      "normalised_ref": "Local Authority Response Times Act 2020",
+      "status": "not_found",
+      "span": {
+        "start": 796,
+        "end": 835
+      }
+    },
+    {
+      "raw_text": "section 26 of the Local Government Act 1974",
+      "normalised_ref": "Local Government Act 1974, s.26",
+      "status": "verified",
+      "span": {
+        "start": 1070,
+        "end": 1113
+      }
+    }
+  ],
+  "contested": false,
+  "notes": "style: ai. Band 3: enforcement action during an open dispute causes real harm, but no safety risk."
+}

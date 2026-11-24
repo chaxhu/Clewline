@@ -1,0 +1,36 @@
+{
+  "case_id": "case_013",
+  "issues": [
+    {
+      "summary": "FOI request not answered within the statutory deadline",
+      "category": "information_request",
+      "span": {
+        "start": 156,
+        "end": 256
+      }
+    }
+  ],
+  "urgency_band": 2,
+  "citations": [
+    {
+      "raw_text": "section 1 of the Freedom of Information Act 2000",
+      "normalised_ref": "Freedom of Information Act 2000, s.1",
+      "status": "verified",
+      "span": {
+        "start": 417,
+        "end": 465
+      }
+    },
+    {
+      "raw_text": "section 94 of\nthe Freedom of Information Act 2000",
+      "normalised_ref": "Freedom of Information Act 2000, s.94",
+      "status": "needs_review",
+      "span": {
+        "start": 672,
+        "end": 721
+      }
+    }
+  ],
+  "contested": false,
+  "notes": "style: ai. Band 2: late information request, no health or safety impact."
+}

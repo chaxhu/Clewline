@@ -1,0 +1,62 @@
+{
+  "case_id": "case_010",
+  "issues": [
+    {
+      "summary": "Black mould in children's bedroom not fixed after three visits",
+      "category": "housing_repairs",
+      "span": {
+        "start": 250,
+        "end": 343
+      }
+    },
+    {
+      "summary": "Formal complaint from August received no response",
+      "category": "complaint_handling",
+      "span": {
+        "start": 1303,
+        "end": 1418
+      }
+    }
+  ],
+  "urgency_band": 4,
+  "citations": [
+    {
+      "raw_text": "section 11 of the\nLandlord and Tenant Act 1985",
+      "normalised_ref": "Landlord and Tenant Act 1985, s.11",
+      "status": "verified",
+      "span": {
+        "start": 717,
+        "end": 763
+      }
+    },
+    {
+      "raw_text": "section 9A of the Landlord and Tenant Act 1985",
+      "normalised_ref": "Landlord and Tenant Act 1985, s.9A",
+      "status": "verified",
+      "span": {
+        "start": 864,
+        "end": 910
+      }
+    },
+    {
+      "raw_text": "Residential Damp Prevention Act 2021",
+      "normalised_ref": "Residential Damp Prevention Act 2021",
+      "status": "not_found",
+      "span": {
+        "start": 1037,
+        "end": 1073
+      }
+    },
+    {
+      "raw_text": "section 48 of the Landlord and\nTenant Act 1985",
+      "normalised_ref": "Landlord and Tenant Act 1985, s.48",
+      "status": "needs_review",
+      "span": {
+        "start": 1168,
+        "end": 1214
+      }
+    }
+  ],
+  "contested": false,
+  "notes": "style: ai. Band 4: mould is worsening a four-year-old's asthma, confirmed by a GP."
+}

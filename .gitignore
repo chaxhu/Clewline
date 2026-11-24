@@ -1,0 +1,31 @@
+# Secrets (governance rule 6: keys live only in .env)
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+build/
+dist/
+
+# Tools
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Local Langfuse data, if bind-mounted
+langfuse_data/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Evaluation progress files (resume state)
+.cache/

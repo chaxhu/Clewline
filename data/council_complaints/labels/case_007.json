@@ -1,0 +1,27 @@
+{
+  "case_id": "case_007",
+  "issues": [
+    {
+      "summary": "Single person discount not applied to council tax",
+      "category": "council_tax",
+      "span": {
+        "start": 73,
+        "end": 126
+      }
+    }
+  ],
+  "urgency_band": 2,
+  "citations": [
+    {
+      "raw_text": "section 11 of the Local\nGovernment Finance Act 1992",
+      "normalised_ref": "Local Government Finance Act 1992, s.11",
+      "status": "verified",
+      "span": {
+        "start": 183,
+        "end": 234
+      }
+    }
+  ],
+  "contested": false,
+  "notes": "style: human. Band 2: billing error, no health or safety impact."
+}
