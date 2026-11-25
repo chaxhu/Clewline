@@ -1,18 +1,41 @@
 # Clewline
 
-Governed agentic AI for casework. AI agents research each case, a human signs off every decision, and every step is traced, costed and evaluated.
+Clewline is a learning project in governed AI for casework. AI agents read each case and suggest what to do. A human signs off every decision before it goes out. Every step is traced, costed and scored against labelled answers.
 
-The first domain is UK council complaints. All cases are synthetic.
+The first domain is UK council complaints.
 
-## Setup
+> **All data is synthetic.** Every complaint, name, address and council in this repo is invented. No real personal data is used anywhere.
 
-You need [uv](https://docs.astral.sh/uv/) and Docker Desktop.
+## Status
+
+- **Foundations: done.** A case schema, 20 labelled test complaints, local tracing with Langfuse, one switch between OpenAI and Gemini, and an evaluation runner that writes dated reports. 214 tests pass.
+- **Next: Win 1, the fake-law detector.** It will check every law a complaint cites and label it as real, made up, or needing a human to review.
+
+## First result
+
+Before any AI, a simple keyword rule rates how urgent each test complaint is, on a scale of 1 to 5:
+
+| Step | Exact band | Within one band |
+| --- | --- | --- |
+| Keyword rule (no AI) | 45% | 90% |
+
+So it picks the exact band 45% of the time, and is at most one band off 90% of the time. This is the bar every AI step has to beat. Full report: [reports/2026-11-24_keyword_urgency.md](reports/2026-11-24_keyword_urgency.md).
+
+## Quick start
+
+You need [uv](https://docs.astral.sh/uv/). No API keys are needed for this.
 
 ```bash
-uv sync                 # create .venv and install dependencies
-cp .env.example .env    # then add your own keys
-uv run pytest           # run the tests
+git clone https://github.com/chaxhu/Clewline.git
+cd Clewline
+uv sync                                             # install dependencies
+uv run pytest                                       # 214 offline tests
+uv run python scripts/run_eval.py keyword_urgency   # score the keyword rule and write a report
 ```
+
+Without Langfuse keys, the last command prints an "Authentication error" warning. That only means tracing is off. The run still finishes and writes its report.
+
+To make real model calls, copy `.env.example` to `.env` and add your own keys. To see traces, set up Langfuse as below. It needs Docker Desktop.
 
 ## Tracing setup (Langfuse, local)
 
@@ -145,7 +168,7 @@ What every run does:
 - **Errors are not wrong answers.** If a step fails, for example a call that failed after all retries, the case is listed under Errors and left out of the scores.
 - **Progress is saved after every case** in `.cache/eval_runs/`. If the spend cap stops a run, or it crashes, `--resume` carries on: it skips answered cases and tries failed ones again. Without `--resume` or `--fresh`, an unfinished run is never silently thrown away.
 - **Subsets** (`--cases`, `--limit`) get their own report, `reports/<date>_<step>_subset.md`, so they never overwrite a full run.
-- **The report header** gives the status, code version, a fingerprint of the test set, the cases run, the models used, the fallback setting, the spend against the cap, and when the run started and was resumed. Two reports are only comparable when their fingerprints match.
+- **The report header** gives the status, the environment (`eval`), the release (git commit), a fingerprint of the test set, the headline urgency score, the cases run, the models used, the fallback setting, the spend against the cap, and when the run started and was resumed. Two reports are only comparable when their fingerprints match.
 
 What is scored, when a step returns it:
 
